@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+
+  envoy:
+    image: ${DOCKER_REGISTRY-}envoyproxy/envoy
+    volumes:
+      - ./front-envoy.yaml:/etc/envoy/envoy.yaml
+
+    expose:
+    - "9901"
+    - "10000"
+    ports:
+    - "9901:9901"
+    - "10000:10000"
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+
+    ports:
+    - "9001:80"
+
+
+  mvc:
+    image: ${DOCKER_REGISTRY-}mvc
+    build:
+      context: .
+      dockerfile: mvc/Dockerfile
+
+    ports:
+    - "9002:80"
+
